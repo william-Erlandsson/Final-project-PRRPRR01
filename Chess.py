@@ -2,17 +2,21 @@
 
 import numpy as np
 
-# Board
+## Pieces
 
-Index_letter = ["a", "b", "c", "d", "e", "f", "g", "h"]
+black = {"Pawn" : "b", "Rook" : "♜", "Knight" : "♞", "Bishop" : "♝", "King" : "♚", "Queen" : "♛" }
+white = {"Pawn" : "♙", "Rook" : "♖", "Knight" : "♘", "Bishop" : "♗", "King" : "♔", "Queen" : "♕" }
 
-Board = np.zeros((8, 9))
+## Board
 
-for i in range(9):
-    Board[i - 1, 0] = i
+Board = np.full((8, 8), ' ')
 
-Index_letter = np.array((' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'))
+# Placing pawns
+Board[1, : ] = black['Pawn']
+Board[6, : ] = white['Pawn']
 
-print(Board, '\n', Index_letter)
+# Placing Rooks
+Board[0, 0] = black['Rook']
 
 
+print(Board)
