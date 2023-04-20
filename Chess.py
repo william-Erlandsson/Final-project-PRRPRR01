@@ -67,25 +67,7 @@ Board_Reset()
 
 print(Board)
 
-### Turn ocelator
-
-for i in range(10):
-    if T % 2 == 0:
-        Turn = 'White'
-
-    else:
-        Turn = 'Black'
-    
-    T += 1
-    print(Turn)
-
 ### Piece moves
-
-print('Choose a piece and where to move it.')
-Move = input('piece,old location(x,y),new location(x,y): ')
-Move = Move.split(',')
-print(Move)
-
 
 Board_index = {
     'y' : {
@@ -96,10 +78,30 @@ Board_index = {
     }
 }
 
-# Removes piece from old location
-Board[Board_index['x'][Move[2]], Board_index['y'][Move[1]]] = ' '
+for i in range(2): # Will be turned into a while loop in the future
+    if T == 0:
+        Turn = "White's turn"
+        TurnCol = 'White'
+        T = 1
 
-# Adds piece in new location
-Board[Board_index['x'][Move[4]], Board_index['y'][Move[3]]] = Pieces['White'][Move[0]]
+    else:
+        Turn = "Black's turn"
+        TurnCol = 'Black'
+        T = 0
+    
+    print(Turn, '\n' 'Choose a piece and where to move it.')
+    
+    Move = input('piece,current location,new location: ')
+    Move = Move.split(',')
+    
+    if 
+    
+    Move_Old = ([*Move[1]])
+    Move_New = ([*Move[2]])
+    # Removes piece from current location
+    Board[Board_index['x'][Move_Old[1]], Board_index['y'][Move_Old[0]]] = ' '
 
-print(Board)
+    # Adds piece in new location
+    Board[Board_index['x'][Move_New[1]], Board_index['y'][Move_New[0]]] = Pieces[TurnCol][Move[0]]
+
+    print(Board)
