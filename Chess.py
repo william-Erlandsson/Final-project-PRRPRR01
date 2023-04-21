@@ -70,15 +70,25 @@ print(Board)
 ### Piece moves
 
 Board_index = {
-    'y' : {
+    'x' : {
         'a' : 0, 'b' : 1, 'c' : 2, 'd' : 3, 'e' : 4, 'f' : 5, 'g' : 6, 'h' : 7
     },
-    'x' : {
+    'y' : {
         '1' : 7, '2' : 6, '3' : 5, '4' : 4, '5' : 3, '6' : 2, '7' : 1, '8' : 0
     }
 }
 
-for i in range(2): # Will be turned into a while loop in the future
+def get_keys(test_dict):
+    innerkeys = []
+    for key, value in test_dict.items():
+        if type(value) is dict:
+            new_keys = get_keys(value)
+            for innerkey in new_keys:
+                result.append(innerkey)
+    return result
+
+
+for i in range(1): # Will be turned into a while loop in the future
     if T == 0:
         Turn = "White's turn"
         TurnCol = 'White'
@@ -91,17 +101,33 @@ for i in range(2): # Will be turned into a while loop in the future
     
     print(Turn, '\n' 'Choose a piece and where to move it.')
     
+    
     Move = input('piece,current location,new location: ')
     Move = Move.split(',')
-    
-    if 
-    
     Move_Old = ([*Move[1]])
     Move_New = ([*Move[2]])
+    
+    print(Board[Board_index['y'][Move_New[1]], Board_index['x'][Move_New[0]]])
+    print(Pieces[TurnCol])
+    
+
+
+    
+    if Board[Board_index['x'][Move_New[0]], Board_index['y'][Move_New[1]]] in innerkey:
+        print('banan')
+    
+    else:
+        print('tomat')
+    
+    
+    print("One line Code Key value: ", list(Pieces.keys())
+      [list(Pieces.values()).index('p')])
+    
+    
     # Removes piece from current location
-    Board[Board_index['x'][Move_Old[1]], Board_index['y'][Move_Old[0]]] = ' '
+    Board[Board_index['y'][Move_Old[1]], Board_index['x'][Move_Old[0]]] = ' '
 
     # Adds piece in new location
-    Board[Board_index['x'][Move_New[1]], Board_index['y'][Move_New[0]]] = Pieces[TurnCol][Move[0]]
+    Board[Board_index['y'][Move_New[1]], Board_index['x'][Move_New[0]]] = Pieces[TurnCol][Move[0]]
 
     print(Board)
