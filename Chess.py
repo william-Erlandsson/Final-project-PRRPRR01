@@ -10,15 +10,17 @@ T = 0
 
 Board = np.full((8, 8), ' ') # Creates the 8 × 8 board
 
-# Nested dictionaries containing the peices and their visualisations
-Pieces ={
+# Dictionaries containing the peices and their visualisations
+
+Pieces = {
     'Black' : {
-        "Pawn" : "p", "Rook" : "♜", "Knight" : "♞", "Bishop" : "♝", "King" : "♚", "Queen" : "♛" 
-    }, 
+        "Pawn" : "p", "Rook" : "♜", "Knight" : "♞", "Bishop" : "♝", "King" : "♚", "Queen" : "♛"     
+    },
     'White' : {
         "Pawn" : "♙", "Rook" : "♖", "Knight" : "♘", "Bishop" : "♗", "King" : "♔", "Queen" : "♕" 
     }
 }
+
 def Board_Reset():
     """resets the board with pieces in their original positions and resets the turn ocelator"""
     
@@ -78,25 +80,18 @@ Board_index = {
     }
 }
 
-def get_keys(test_dict):
-    innerkeys = []
-    for key, value in test_dict.items():
-        if type(value) is dict:
-            new_keys = get_keys(value)
-            for innerkey in new_keys:
-                result.append(innerkey)
-    return result
-
+W = Pieces['White']
+B = Pieces['Black']
 
 for i in range(1): # Will be turned into a while loop in the future
     if T == 0:
         Turn = "White's turn"
-        TurnCol = 'White'
+        Turncol = 'White'
         T = 1
 
     else:
         Turn = "Black's turn"
-        TurnCol = 'Black'
+        Turncol = 'Black'
         T = 0
     
     print(Turn, '\n' 'Choose a piece and where to move it.')
@@ -108,21 +103,9 @@ for i in range(1): # Will be turned into a while loop in the future
     Move_New = ([*Move[2]])
     
     print(Board[Board_index['y'][Move_New[1]], Board_index['x'][Move_New[0]]])
-    print(Pieces[TurnCol])
     
-
-
-    
-    if Board[Board_index['x'][Move_New[0]], Board_index['y'][Move_New[1]]] in innerkey:
-        print('banan')
-    
-    else:
-        print('tomat')
-    
-    
-    print("One line Code Key value: ", list(Pieces.keys())
-      [list(Pieces.values()).index('p')])
-    
+    if ((T == 0) and (Board[Board_index['y'][Move_Old[0]], Board_index['x'][Move_Old[1]]] in W.values())):
+            print('success')
     
     # Removes piece from current location
     Board[Board_index['y'][Move_Old[1]], Board_index['x'][Move_Old[0]]] = ' '
@@ -131,3 +114,5 @@ for i in range(1): # Will be turned into a while loop in the future
     Board[Board_index['y'][Move_New[1]], Board_index['x'][Move_New[0]]] = Pieces[TurnCol][Move[0]]
 
     print(Board)
+
+Board_Reset()
