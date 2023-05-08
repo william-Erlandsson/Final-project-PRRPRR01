@@ -157,6 +157,10 @@ Move = input("Piece,current location,new location: ") # Takes player input for w
 
 Move = Move.split(',')  # Splits the input into a list with three elements
 
+Move[0] = Move[0].lower()
+Move[1] = Move[1].lower() 
+Move[2] = Move[2].lower()
+
 Move_Old = ([*Move[1]]) # Makes a list of the current location of the selected piece
 Move_New = ([*Move[2]]) # Makes a list of the new location of the selected piece
 
@@ -169,49 +173,79 @@ Piece_Old = Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]]]
 
 print(Board)
 
-if T == 1:
 
-    if Piece_Old == "♙" and Move[0] == "pawn":
+if (Piece_Old == "♙" or Piece_Old == 'p') and Move[0] == "pawn":
 
-        if Board[Index['y'][Move_Old[1]] + 1, Index['x'][Move_Old[0]]] == ' ':
+    if (Board[Index['y'][Move_Old[1]] + 1, Index['x'][Move_Old[0]]] == ' ' and T == 1) or \
+       (Board[Index['y'][Move_Old[1]] - 1, Index['x'][Move_Old[0]]] == ' ' and T == 0):
 
-            if Move_New[1] - Move_Old[1] == 1 and Move_New[0] == Move_Old[0]:
+        if (Move_New[1] - Move_Old[1] == 1 or Move_Old[1] - Move_New[1] == 1) and Move_New[0] == Move_Old[0]:
 
-                Move_Maker()
+            Move_Maker()
 
-                if Move_New[1] == 8:
+            if Move_New[1] == 8:
 
-                    promote = input("Choose a piece to promote to.")
+                promote = input("Choose a piece to promote to.")
+                promote.lower()
 
-                    if promote in ["rook, knight, bishop, "]
+                if promote in ["rook, knight, bishop, queen"]:
 
-            elif Move_Old[1] == 2 and Move_New[1] - Move_Old[1] == 2 and:
+                    Move[0] = promote
 
-                Move_Maker()
+                    Move_Maker()
 
-        elif Piece_New in B.values() and \
-             (Index['y'][Move_New[1]] == Index['y'][Move_Old[1]] + 1 or \
-              Index['y'][Move_New[1]] == Index['y'][Move_Old[1]] - 1) and \
-             (Index['x'][Move_New[0]] == Index['x'][Move_Old[0]] + 1 or \
-              Index['x'][Move_New[0]] == Index['x'][Move_Old[0]] - 1):
+        elif Move_Old[1] == 2 and Move_New[1] - Move_Old[1] == 2:
+
+            Move_Maker()
+
+    elif Piece_New in B.values() and \
+         Index['y'][Move_New[1]] == Index['y'][Move_Old[1]] + 1 and \
+        (Index['x'][Move_New[0]] == Index['x'][Move_Old[0]] + 1 or \
+         Index['x'][Move_New[0]] == Index['x'][Move_Old[0]] - 1):
+
+        Move_Maker()
+
+    elif Piece_New in W.values() and \
+         Index['y'][Move_New[1]] == Index['y'][Move_Old[1]] -1 and \
+        (Index['x'][Move_New[0]] == Index['x'][Move_Old[0]] + 1 or \
+         Index['x'][Move_New[0]] == Index['x'][Move_Old[0]] - 1):
+
+        Move_Maker()
+
+
+elif ((Piece_Old == '♖' or Piece_Old == '♜') and Move[0] == "rook") or \
+     ((Piece_Old == '♕' or Piece_Old == '♛') and Move[0] == "queen"):
+
+    if Move_New[1] == Move_Old[1] or Move_New[0] == Move_Old[0]:
 
             Move_Maker()
 
 
+elif ((Piece_Old == '♗' or Piece_Old == '♝') and Move[0] == "bishop") or \
+     ((Piece_Old == '♕' or Piece_Old == '♛') and Move[0] == "queen"):
+    
+    if ((Index['y'][Move_New[1]] - Index['y'][Move_Old[1]]) / \ 
+        (Index['x'][Move_New[0]] - Index['x'][Move_Old[0]]) == 1) or \
+       ((Index['y'][Move_New[1]] - Index['y'][Move_Old[1]]) / \ 
+        (Index['x'][Move_New[0]] - Index['x'][Move_Old[0]]) == -1):
+
+        Move_Maker()
 
 
-        else:
+elif ((Piece_Old == '♘' or Piece_Old == '♞') and Move[0] == "knight"):
+    
+    if (())
 
-            if T == 0:              #
-                                    #
-                T = 1               #
-                                    # Gives player their turn back
-            else:                   #
-                                    #
-                T = 0               #
 
-            print("Illegal move, try again.")
+else:
 
-    elif Piece_Old == '♖' and Move[0] == "rook":
-        
-        
+    if T == 0:              #
+                            #
+        T = 1               #
+                            # Gives player their turn back
+    else:                   #
+                            #
+        T = 0               #
+
+    print("Illegal move, try again.")
+    
