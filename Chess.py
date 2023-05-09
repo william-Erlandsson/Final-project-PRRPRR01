@@ -90,6 +90,8 @@ def Board_Reset():
     # Removes pieces in the center of the board
     Board[2 : 6, : ] = ' '
 
+Board_Reset()
+
 #### Move_Maker
 
 def Move_Maker():
@@ -188,36 +190,25 @@ dy = Index['y'][Move_New[1]] - Index['y'][Move_Old[1]]
 
 if (Piece_Old == "♙" or Piece_Old == 'p') and Move[0] == "pawn":
     
-    if Piece_New in B.values() and dy == -1 and (dx == 1 or dx == -1):
+    if (Move_New[1] == '8' and T == 1) or (Move_New[1] == '1' and T == 0):
+    
+        promote = input("Choose a piece to promote to.")
+        promote.lower()
+
         
-        print('test')
-        if Move_New[1] == '8':
+        if promote in ["rook", "knight", "bishop", "queen"]:
 
-            promote = input("Choose a piece to promote to.")
-            promote.lower()
+            Move[0] = promote
 
-            if promote in ["rook, knight, bishop, queen"]:
+            Move_Maker()
 
-                Move[0] = promote
-
-                Move_Maker()
-
+    
+    elif Piece_New in B.values() and dy == -1 and (dx == 1 or dx == -1):
+        
         Move_Maker()
-  
 
-    elif Piece_New in W.values() and dy == 1 and (dx == 1 or dx == -1):
-        
-        print('test')
-        if Move_New[1] == '1':
 
-            promote = input("Choose a piece to promote to.")
-            promote.lower()
-
-            if promote in ["rook, knight, bishop, queen"]:
-
-                Move[0] = promote
-
-                Move_Maker()
+    elif Piece_New in W.values() and dy == 1 and (dx == 1 or dx == -1): 
 
         Move_Maker()
 
@@ -226,27 +217,12 @@ if (Piece_Old == "♙" or Piece_Old == 'p') and Move[0] == "pawn":
        (Board[(Index['y'][Move_Old[1]] + 1), Index['x'][Move_Old[0]]] == ' ' and T == 0):
         
         if (dy == 1 or dy == -1) and Move_New[0] == Move_Old[0]:
-            print('test')
-            if Move_New[1] == 8:
-
-                promote = input("Choose a piece to promote to.")
-                promote.lower()
-
-                if promote in ["rook, knight, bishop, queen"]:
-
-                    Move[0] = promote
-
-                    Move_Maker()
             
             Move_Maker()
 
 
-            
-
-
         elif (dy == 2 or dy == -2) and ((Move_Old[1] == '2' and T == 1) or (Move_Old[1] == '7' and T == 0)):
 
-            print('s')
             Move_Maker()
 
 
@@ -259,35 +235,40 @@ if (Piece_Old == "♙" or Piece_Old == 'p') and Move[0] == "pawn":
 """
     
 
-elif ((Piece_Old == '♖' or Piece_Old == '♜') and Move[0] == "rook") or \
-     ((Piece_Old == '♕' or Piece_Old == '♛') and Move[0] == "queen"):
+elif ((Piece_Old == '♖' or Piece_Old == '♜') and Move[0] == "rook"):
 
     if Move_New[1] == Move_Old[1] or Move_New[0] == Move_Old[0]:
 
             Move_Maker()
 
 
-elif ((Piece_Old == '♗' or Piece_Old == '♝') and Move[0] == "bishop") or \
-     ((Piece_Old == '♕' or Piece_Old == '♛') and Move[0] == "queen"):
-    
+elif ((Piece_Old == '♗' or Piece_Old == '♝') and Move[0] == "bishop"):
+
     if (dy / dx == 1) or (dy / dx == -1):
 
         Move_Maker()
 
 
 elif (Piece_Old == '♘' or Piece_Old == '♞') and Move[0] == "knight":
-    
+
     if ((dy ** 2) + (dx ** 2)) ** (1/2) == 5 ** (1/2) and \
        ((dy == 1 or dy == -1) or (dx == 1 or dx == -1)) and dx != dy:
+
+        Move_Maker()
+
+        
+elif (Piece_Old == '♕' or Piece_Old == '♛') and Move[0] == "queen":
+    
+    if Move_New[1] == Move_Old[1] or Move_New[0] == Move_Old[0] or dy / dx == 1 or dy / dx == -1:
         
         Move_Maker()
         
-        
-elif (Piece_Old == '' or Piece_Old == '') and Move[0] == "king":
-    
+
+elif (Piece_Old == '♔' or Piece_Old == '♚') and Move[0] == "king":
+
     if ((dx == 1 or dx == -1) and dy == 0) or ((dy == 1 or dy == -1) and dx == 0) or \
-       ((dy / dx == 1 or dy / dx == -1) and (dx == 1 or dx == -1)):
-        
+       ((dx != 0 and (dy / dx == 1 or dy / dx == -1)) and (dx == 1 or dx == -1)):
+
         Move_Maker()
 
 
