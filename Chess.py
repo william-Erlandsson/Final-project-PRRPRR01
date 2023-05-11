@@ -10,6 +10,7 @@ T = 0
 
 Board = np.full((8, 8), ' ') # Creates the 8 × 8 board
 
+Last_Move = []
 Move_List = []
 
 ### Dictionaries
@@ -51,6 +52,9 @@ def Board_Reset():
     
     global Move_List
     Move_List = []
+    
+    global Last_Move
+    Last_Move = []
 
     # Places Pawns
     Board[1, : ] = 'p'
@@ -118,6 +122,7 @@ def Move_Maker():
 
     global T
     global Move_List
+    global Last_Move
 
     # Checks if it is white's turn and the piece to be moved also is white
     if T == 1 and Piece_Old in W.values(): 
@@ -131,7 +136,11 @@ def Move_Maker():
             # Places piece at it's new location
             Board[Index['y'][Move_New[1]], Index['x'][Move_New[0]]] = Piece_Old
 
-            Move_List.append(Move_New)
+            Last_Move = []
+            Last_Move.append(Move_Old[1])
+            Last_Move.append(Move_New[1])
+            
+            Move_List.append(Move)
             
         else:
 
@@ -150,7 +159,9 @@ def Move_Maker():
             # Adds piece in new location
             Board[Index['y'][Move_New[1]], Index['x'][Move_New[0]]] = Piece_Old
 
-            
+            Last_Move = []
+            Last_Move.append(Move_Old[1])
+            Last_Move.append(Move_New[1])
             Move_List.append(Move_New)
 
 
@@ -181,7 +192,7 @@ else:                               #
 print(Turn, '\n' "Choose a piece and where to move it.")
 Move = input("Current location,new location: ") # Takes player input for what move to make
 
-Move = Move.split(',')  # Splits the input into a list with three elements
+Move = Move.split(',')  # Splits the input into a list with two elements
 
 Move[0] = Move[0].lower() 
 Move[1] = Move[1].lower()
@@ -196,8 +207,6 @@ dx = Index['x'][Move_New[0]] - Index['x'][Move_Old[0]]
 dy = Index['y'][Move_New[1]] - Index['y'][Move_Old[1]]
 
 ### Legal move detection
-
-#### Detecting the legal moves for each piece with the exception of special moves (i.e castle, pawn promotion and en pasant).
 
 if Piece_Old == "♙" or Piece_Old == 'p':
     
@@ -220,15 +229,17 @@ if Piece_Old == "♙" or Piece_Old == 'p':
     
     elif Move_Old[1] == '5' and (Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]] - 1] == 'p' or \
          Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]] + 1] == 'p') and \
-         Move_List[-2] == Move_Old and (dx == 1 or dx == -1) and dy == -1:
+         Index['y'][Last_Move[1]] - Index['y'][Last_Move[0]] == 2 and (dx == 1 or dx == -1) and dy == -1:
         
+        Board[3, Index['x'][Move_New[0]]] = ' '
         Move_Maker()
         
         
     elif Move_Old[1] == '4' and (Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]] - 1] == '♙' or \
          Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]] + 1] == '♙') and \
-         Move_List[-2] == Move_Old and (dx == 1 or dx == -1) and dy == 1:
+         Index['y'][Last_Move[1]] - Index['y'][Last_Move[0]] == -2 and (dx == 1 or dx == -1) and dy == 1:
         
+        Board[4, Index['x'][Move_New[0]]] = ' '
         Move_Maker()
         
         
@@ -323,7 +334,10 @@ elif Piece_Old == '♔' or Piece_Old == '♚':
        ((dx != 0 and (dy / dx == 1 or dy / dx == -1)) and (dx == 1 or dx == -1)):
 
         Move_Maker()
-        
+    
+    
+    elif (dx == 2 or dx == -2) and dy == 0 and 
+    
         
     else:
         
@@ -334,3 +348,10 @@ elif Piece_Old == '♔' or Piece_Old == '♚':
 else:
     
     Move_Error()
+
+Board_Reset()
+Board[3,4] = '♙'
+Board[4,2] = 'p'
+
+print(Board)
+
