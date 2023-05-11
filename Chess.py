@@ -1,10 +1,12 @@
 # This may become a functioning version of chess
 
-### Libraries
+# Libraries
 
 import numpy as np
 
-### Variables
+
+# _______________________________________________________________
+# Variables
 
 T = 0
 
@@ -13,7 +15,17 @@ Board = np.full((8, 8), ' ') # Creates the 8 × 8 board
 Last_Move = []
 Move_List = []
 
-### Dictionaries
+W_Rook_a_Movecount = 0
+W_Rook_h_Movecount = 0
+B_Rook_a_Movecount = 0
+B_Rook_h_Movecount = 0
+
+W_King_Movecount = 0
+B_King_Movecount = 0
+
+
+# _______________________________________________________________
+# Dictionaries
 
 # Dictionaries containing the peices and their visualisations on the board
 Pieces = {
@@ -39,9 +51,11 @@ Index = {
 W = Pieces['White'] # Isolates the dictionary with the white pieces
 B = Pieces['Black'] # Isolates the dictionary with the black pieces
 
-### Functions
 
-#### Board_Reset
+# _______________________________________________________________
+# Functions
+
+## Board_Reset
 
 def Board_Reset():
     """Resets the board with pieces in their original positions and resets the turn ocelator"""
@@ -94,8 +108,6 @@ def Board_Reset():
     # Removes pieces in the center of the board
     Board[2 : 6, : ] = ' '
 
-Board_Reset()
-
 #### Move_Error
 
 def Move_Error():
@@ -113,7 +125,9 @@ def Move_Error():
 
     print("Illegal move. Try again.")
 
-#### Move_Maker
+
+# _______________________________________________________________
+## Move_Maker
 
 def Move_Maker():
     """Move_Maker checks if the right piece is moved and if an own piece is going to be taken.
@@ -123,7 +137,14 @@ def Move_Maker():
     global T
     global Move_List
     global Last_Move
-
+    global W_Rook_a_Movecount
+    global W_Rook_h_Movecount
+    global B_Rook_a_Movecount
+    global B_Rook_h_Movecount
+    global W_King_Movecount
+    global B_King_Movecount
+    
+    
     # Checks if it is white's turn and the piece to be moved also is white
     if T == 1 and Piece_Old in W.values(): 
         
@@ -131,16 +152,28 @@ def Move_Maker():
         if Piece_New not in W.values():    
             
             # Removes piece from it's current location
-            Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]]] = ' '
+            Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]]] = ' '
 
             # Places piece at it's new location
             Board[Index['y'][Move_New[1]], Index['x'][Move_New[0]]] = Piece_Old
 
             Last_Move = []
-            Last_Move.append(Move_Old[1])
+            Last_Move.append(Move_Current[1])
             Last_Move.append(Move_New[1])
             
             Move_List.append(Move)
+            
+            if Piece_Old == '♔':
+                W_King_Movecount += 1
+            
+            
+            elif Piece_Old == '♖' and Move_Current[0] == 'a':
+                W_Rook_a_Movecount += 1
+             
+            
+            elif Piece_Old == '♖' and Move_Current[0] == 'h':
+                W_Rook_h_Movecount += 1
+            
             
         else:
 
@@ -154,17 +187,29 @@ def Move_Maker():
         if Piece_New not in B.values():    
 
             # Removes piece from current location
-            Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]]] = ' '
+            Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]]] = ' '
 
             # Adds piece in new location
             Board[Index['y'][Move_New[1]], Index['x'][Move_New[0]]] = Piece_Old
 
             Last_Move = []
-            Last_Move.append(Move_Old[1])
+            Last_Move.append(Move_Current[1])
             Last_Move.append(Move_New[1])
             Move_List.append(Move_New)
 
-
+            
+            if Piece_Old == '♚':
+                W_King_Movecount += 1
+            
+            
+            elif Piece_Old == '♜' and Move_Current[0] == 'a':
+                B_Rook_a_Movecount += 1
+            
+            
+            elif Piece_Old == '♜' and Move_Current[0] == 'h':
+                W_Rook_h_Movecount += 1
+            
+            
         else:
 
             T = 1 # Gives black another chance to make a move
@@ -176,7 +221,9 @@ def Move_Maker():
     
     print(Board)
 
-### Turn ocelator and input
+
+# _______________________________________________________________
+# Turn ocelator and input
 
 if T == 0:                          #
                                     #
@@ -197,16 +244,18 @@ Move = Move.split(',')  # Splits the input into a list with two elements
 Move[0] = Move[0].lower() 
 Move[1] = Move[1].lower()
 
-Move_Old = ([*Move[0]]) # Makes a list of the current location of the selected piece
+Move_Current = ([*Move[0]]) # Makes a list of the current location of the selected piece
 Move_New = ([*Move[1]]) # Makes a list of the new location of the selected piece
 
 Piece_New = Board[Index['y'][Move_New[1]], Index['x'][Move_New[0]]]
-Piece_Old = Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]]]
+Piece_Old = Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]]]
 
-dx = Index['x'][Move_New[0]] - Index['x'][Move_Old[0]]
-dy = Index['y'][Move_New[1]] - Index['y'][Move_Old[1]]
+dx = Index['x'][Move_New[0]] - Index['x'][Move_Current[0]]
+dy = Index['y'][Move_New[1]] - Index['y'][Move_Current[1]]
 
-### Legal move detection
+
+# _______________________________________________________________
+# Legal move detection
 
 if Piece_Old == "♙" or Piece_Old == 'p':
     
@@ -227,17 +276,19 @@ if Piece_Old == "♙" or Piece_Old == 'p':
             Move_Error()
     
     
-    elif Move_Old[1] == '5' and (Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]] - 1] == 'p' or \
-         Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]] + 1] == 'p') and \
-         Index['y'][Last_Move[1]] - Index['y'][Last_Move[0]] == 2 and (dx == 1 or dx == -1) and dy == -1:
+    elif Move_Current[1] == '5' and (dx == 1 or dx == -1) and dy == -1 and \
+        (Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]] - 1] == 'p' or \
+         Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]] + 1] == 'p') and \
+         Index['y'][Last_Move[1]] - Index['y'][Last_Move[0]] == 2:
         
         Board[3, Index['x'][Move_New[0]]] = ' '
         Move_Maker()
         
         
-    elif Move_Old[1] == '4' and (Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]] - 1] == '♙' or \
-         Board[Index['y'][Move_Old[1]], Index['x'][Move_Old[0]] + 1] == '♙') and \
-         Index['y'][Last_Move[1]] - Index['y'][Last_Move[0]] == -2 and (dx == 1 or dx == -1) and dy == 1:
+    elif Move_Current[1] == '4' and (dx == 1 or dx == -1) and dy == 1 and \
+        (Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]] - 1] == '♙' or \
+         Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]] + 1] == '♙') and \
+         Index['y'][Last_Move[1]] - Index['y'][Last_Move[0]] == -2:
         
         Board[4, Index['x'][Move_New[0]]] = ' '
         Move_Maker()
@@ -253,18 +304,18 @@ if Piece_Old == "♙" or Piece_Old == 'p':
         Move_Maker()
 
     
-    elif (Board[(Index['y'][Move_Old[1]] - 1), Index['x'][Move_Old[0]]] == ' ' and T == 1) or \
-         (Board[(Index['y'][Move_Old[1]] + 1), Index['x'][Move_Old[0]]] == ' ' and T == 0):
+    elif (Board[(Index['y'][Move_Current[1]] - 1), Index['x'][Move_Current[0]]] == ' ' and T == 1) or \
+         (Board[(Index['y'][Move_Current[1]] + 1), Index['x'][Move_Current[0]]] == ' ' and T == 0):
         
         if (dy == 1 or dy == -1) and dx == 0:
             
             Move_Maker()
 
 
-        elif (dy == 2 or dy == -2) and ((Move_Old[1] == '2' and T == 1 and \
+        elif (dy == 2 or dy == -2) and ((Move_Current[1] == '2' and T == 1 and \
               Board[Index['y'][Move_New[1]], Index['x'][Move_New[0]]] == ' ') or \
              (Board[Index['y'][Move_New[1]], Index['x'][Move_New[0]]] == ' ' and \
-              Move_Old[1] == '7' and T == 0)) and dx == 0:
+              Move_Current[1] == '7' and T == 0)) and dx == 0:
             
             Move_Maker()
             
@@ -281,7 +332,7 @@ if Piece_Old == "♙" or Piece_Old == 'p':
 
 
 elif (Piece_Old == '♖' or Piece_Old == '♜') and \
-     (Move_New[1] == Move_Old[1] or Move_New[0] == Move_Old[0]):
+     (Move_New[1] == Move_Current[1] or Move_New[0] == Move_Current[0]):
 
     Move_Maker()
 
@@ -302,7 +353,7 @@ elif Piece_Old == '♗' or Piece_Old == '♝':
 
 elif Piece_Old == '♘' or Piece_Old == '♞':
 
-    if ((dy ** 2) + (dx ** 2)) ** (1/2) == 5 ** (1/2) and \
+    if ((dy ** 2) + (dx ** 2)) ** (1/2) - 5 ** (1/2) < 0.1 and \
        ((dy == 1 or dy == -1) or (dx == 1 or dx == -1)) and dx != dy:
 
         Move_Maker()
@@ -316,7 +367,7 @@ elif Piece_Old == '♘' or Piece_Old == '♞':
 
 elif Piece_Old == '♕' or Piece_Old == '♛':
           
-    if (Move_New[1] == Move_Old[1] or Move_New[0] == Move_Old[0]) or \
+    if (Move_New[1] == Move_Current[1] or Move_New[0] == Move_Current[0]) or \
        (dy / dx == 1 or dy / dx == -1):
         
         Move_Maker()
@@ -336,9 +387,38 @@ elif Piece_Old == '♔' or Piece_Old == '♚':
         Move_Maker()
     
     
-    elif (dx == 2 or dx == -2) and dy == 0 and 
-    
+    elif dx == 2 and dy == 0 and W_Rook_h_Movecount == 0 and W_King_Movecount == 0 and \
+         (Board[7, 5] == ' ' and Board[7,6] == ' '):
         
+        Board[7, 7] = ' '
+        Board[7, 5] = '♖'
+        Move_Maker()
+    
+    
+    elif dx == -2 and dy == 0 and W_Rook_a_Movecount == 0 and W_King_Movecount == 0 and \
+         (Board[7, 1] == ' ' and Board[7, 2] == ' ' and Board[7, 3] == ' '):
+        
+        Board[7, 0] = ' '
+        Board[7, 3] = '♖'
+        Move_Maker()
+        
+        
+    elif dx == 2 and dy == 0 and B_Rook_h_Movecount == 0 and B_King_Movecount == 0 and \
+         (Board[0, 5] == ' ' and Board[0,6] == ' '):
+        
+        Board[0, 7] = ' '
+        Board[0, 5] = '♜'
+        Move_Maker()
+        
+        
+    elif dx == -2 and dy == 0 and B_Rook_a_Movecount == 0 and B_King_Movecount == 0 and \
+        (Board[0, 1] == ' ' and Board[0, 2] == ' ' and Board[0, 3] == ' '):
+        
+        Board[0, 0] = ' '
+        Board[0, 3] = '♜'
+        Move_Maker()
+        
+
     else:
         
         Move_Error()
@@ -348,10 +428,3 @@ elif Piece_Old == '♔' or Piece_Old == '♚':
 else:
     
     Move_Error()
-
-Board_Reset()
-Board[3,4] = '♙'
-Board[4,2] = 'p'
-
-print(Board)
-
