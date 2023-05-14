@@ -1,4 +1,4 @@
-# This may become a functioning version of chess
+# This is a functioning version of chess
 
 # Libraries
 
