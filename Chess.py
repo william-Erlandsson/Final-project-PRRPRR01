@@ -64,7 +64,7 @@ def Board_Reset():
     global T
     
 
-    T = 0 # Resets variables to their default state in preparation of a new game
+    T = 0 # Resets variable to their default state in preparation of a new game
 
     
     # Places Pawns
@@ -191,7 +191,6 @@ def Move_Maker():
 
             Move_Error()
 
-
     # Checks if it is black's turn and the piece to be moved also is black
     elif T == 0 and Piece_Old in B:
 
@@ -235,7 +234,6 @@ def Move_Maker():
 
         Move_Error()
     
-
     Time_Stop = round(time.time(), 1) # Takes a time stamp for when a move has been made
 
     print(Board)
@@ -391,18 +389,19 @@ if Play == "yes":
     
     Last_Move = [] # Clears Last_Move in preparation for a new game
     
-try:                                                #
-    Mode = input().split('-')                       #
-                                                    #    Tries to iterate over the input 
-    B_Time = int(Mode[0]) * 60                      #
-    W_Time = int(Mode[0]) * 60                      #
+try:                                                    #
+    Mode = input().split('-')                           #
+                                                        #    Tries to iterate over the input 
+    B_Time = int(Mode[0]) * 60                          #
+    W_Time = int(Mode[0]) * 60                          #
     
     
-except:                                             #
-    print("incorrect format for mode inputted.")    #    Prevents the game from starting if iteration failed
-    Play = "no"                                     #
-    
-    
+except:                                                 #
+    if Mode[0] != "unlimited":                          #    Prevents game from starting if iteration failed
+        print("incorrect format for mode inputted.")    #    and The selected mode is not unlimited
+        Play = "no"                                     #
+
+
     
 # _______________________________________________________________
 # Game loop  
@@ -416,6 +415,7 @@ while Play == "yes": # The while-loop that contains the game
         Board_Reset()                   #
         print(Board)                    #
 
+        
         Time_Count = 0                  #
         Time_Stop = 'new game'          #    Resets the timer variables for the first turn of the game
         Time_Start = 'new game'         #
@@ -425,15 +425,16 @@ while Play == "yes": # The while-loop that contains the game
 # _______________________________________________________________
 # Game over messages
     
-    if (Piece_New == '♚' and Move_Made == 1) or B_Time <= 0:
+    if (Piece_New == '♚' and Move_Made == 1) or (B_Time <= 0 and Mode[0] != "unlimited"):
 
-        print('White Wins')     #
-        Play = "no"             #    Gives a game over message and breaks the while-loop
+        print("White Wins. Black's king was captured")    #
+        Play = "no"                                       #    Gives win message and breaks the while-loop
+      
+    
+    elif (Piece_New == '♔' and Move_Made == 1) or (W_Time <= 0 and Mode[0] != "unlimited"):
         
-    elif (Piece_New == '♔' and Move_Made == 1) or W_Time <= 0:
-        
-        print('Black Wins')     #
-        Play = "no"             #    Gives a game over message and breaks the while-loop
+        print("Black Wins. White's king was captured")    #
+        Play = "no"                                       #    Gives win message and breaks the while-loop
         
 
         
@@ -445,6 +446,7 @@ while Play == "yes": # The while-loop that contains the game
         Turn = "White's turn"
         T = 1 # Ocelates turn
         
+        
         # Checks if a timer is needed 
         if Mode[0] != "unlimited":
             
@@ -455,6 +457,12 @@ while Play == "yes": # The while-loop that contains the game
                 Time_Count = 1 # A variable used on the first turn for black     
                 print(Mode[0], ':', "00") # Prints the timer in its starting state for the game-mode
 
+                
+            if W_Time <= 0:
+                print("Black wins. White ran out of time")
+                Play = "no"
+            
+            
             try:
                 W_Time += int(Mode[1]) # Adds a designated amount of time as stated in the Mode input
 
@@ -471,6 +479,7 @@ while Play == "yes": # The while-loop that contains the game
         
         W_Time = W_Time - (Time_Stop - Time_Start) # Calculates time used during a move
 
+        
         # Checks if a timer is needed
         if Mode[0] != "unlimited":
             
@@ -478,7 +487,13 @@ while Play == "yes": # The while-loop that contains the game
             
                 Time_Count = 0
                 print(Mode[0], ':', "00") # Prints the timer in its starting state for the game-mode
-                
+            
+            
+            elif B_Time <= 0:
+                print("White wins. Black ran out of time")
+                Play = "no"
+            
+            
             try:
                 B_Time += int(Mode[1]) # Adds a designated amount of time as stated in the Mode input
 
@@ -497,7 +512,13 @@ while Play == "yes": # The while-loop that contains the game
     # Takes player input for what move to make
     print(Turn, '\n' "Choose a piece and where to move it.")
     Move = input("Current location,new location (Do not use spaces): ") 
-
+    
+    
+    # Prevents Pieces from being moved outside the board and raising an error
+    if Move_New[0] not in Index['x'].keys() or Move_New[1] not in Index['y'].keys():
+            
+            Move_Error()
+    
     
     try:
         Move = Move.split(',')  # Splits the input into a list with two elements
@@ -515,12 +536,13 @@ while Play == "yes": # The while-loop that contains the game
         # Variables made from the difference in the i and j values of the Board array
         dx = Index['x'][Move_New[0]] - Index['x'][Move_Current[0]]
         dy = Index['y'][Move_New[1]] - Index['y'][Move_Current[1]]
-
+        
         
     except:
         Move_Error()
-        
-        
+
+
+
 # _______________________________________________________________
 # Legal Move Detection
 
