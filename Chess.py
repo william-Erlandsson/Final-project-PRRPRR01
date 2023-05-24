@@ -16,7 +16,6 @@ T = 0
 B_Time = 1000                   #
 W_Time = 1000                   #    Are only there to make the unlimited time mode playable
 
-
 W_Rook_a_Movecount = 0          #
 W_Rook_h_Movecount = 0          #
 B_Rook_a_Movecount = 0          #
@@ -249,125 +248,142 @@ def Move_Maker():
 def Piece_Jump():
     """Piece_Jump detects if a player tries jumping over another piece with either a rook, bishop or queen"""
     
+    x = True
+    
     if dx >= 2 and dy == 0:
         
-        try:
-            for i in range(dx - 1):
-            
-                # Checks if any of the spaces between Move_New and Move_Current are not empty
-                if Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]] + (i + 1)] != ' ':
+        for i in range(dx - 1):
+        
+            # Checks if any of the spaces between Move_New and Move_Current are not empty
+            if Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]] + (i + 1)] != ' ':
                 
-                    Move_Error()
-                    break
+                x = False
+                break
             
-        except:
+        if x == True:
             Move_Maker()
+            
+        else:
+            Move_Error()
             
         
     elif dx <= -2 and dy == 0:
         
-        try:
-            for i in range(-dx - 1):
+        for i in range(-dx - 1):
 
-                # Checks if any of the spaces between Move_New and Move_Current are not empty
-                if Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]] - (i + 1)] != ' ':
+            # Checks if any of the spaces between Move_New and Move_Current are not empty
+            if Board[Index['y'][Move_Current[1]], Index['x'][Move_Current[0]] - (i + 1)] != ' ':
 
-                    Move_Error()
-                    break
-
-        except:
+                x = False
+                break
+            
+        if x == True:
             Move_Maker()
+            
+        else:
+            Move_Error()
             
             
     elif dx == 0 and dy <= -2:
-        
-        try:
-            for i in range(-dy - 1):
 
-                # Checks if any of the spaces between Move_New and Move_Current are not empty
-                if Board[Index['y'][Move_Current[1]] - (i + 1), Index['x'][Move_Current[0]]] != ' ':
+        for i in range(-dy - 1):
 
-                    Move_Error()
-                    break
-        
-        except:
-            Move_Maker()
-        
+            # Checks if any of the spaces between Move_New and Move_Current are not empty
+            if Board[Index['y'][Move_Current[1]] - (i + 1), Index['x'][Move_Current[0]]] != ' ':
+
+                x = False
+                break
             
-    elif dx == 0 and dy >= -2:
-        
-        try:
-            for i in range(dy - 1):
-
-                # Checks if any of the spaces between Move_New and Move_Current are not empty
-                if Board[Index['y'][Move_Current[1]] + (i + 1), Index['x'][Move_Current[0]]] != ' ':
-
-                    Move_Error()
-                    break
-        
-        except:
+        if x == True:
             Move_Maker()
+            
+        else:
+            Move_Error()
+            
+            
+    elif dx == 0 and dy >= 2:
+        
+        for i in range(dy - 1):
+
+            # Checks if any of the spaces between Move_New and Move_Current are not empty
+            if Board[Index['y'][Move_Current[1]] + (i + 1), Index['x'][Move_Current[0]]] != ' ':
+
+                x = False
+                break
+            
+        if x == True:
+            Move_Maker()
+            
+        else:
+            Move_Error()
             
             
     elif dx / dy == -1 and dx >= 2:
         
-        try:
-            for i in range(dx - 1):
+        for i in range(dx - 1):
 
-                # Checks if any of the spaces between Move_New and Move_Current are not empty
-                if Board[Index['y'][Move_Current[1]] - (i + 1), Index['x'][Move_Current[0]] + (i + 1)] != ' ':
+            # Checks if any of the spaces between Move_New and Move_Current are not empty
+            if Board[Index['y'][Move_Current[1]] - (i + 1), Index['x'][Move_Current[0]] + (i + 1)] != ' ':
 
-                    Move_Error()
-                    break
-        
-        except:
+                x = False
+                break
+            
+        if x == True:
             Move_Maker()
+            
+        else:
+            Move_Error()
             
             
     elif dx / dy == -1 and dx <= -2:
-        
-        try:
-            for i in range(-dx - 1):
 
-                # Checks if any of the spaces between Move_New and Move_Current are not empty
-                if Board[Index['y'][Move_Current[1]] + (i + 1), Index['x'][Move_Current[0]] - (i + 1)] != ' ':
+        for i in range(-dx - 1):
 
-                    Move_Error()
-                    break
+            # Checks if any of the spaces between Move_New and Move_Current are not empty
+            if Board[Index['y'][Move_Current[1]] + (i + 1), Index['x'][Move_Current[0]] - (i + 1)] != ' ':
 
-        except:
+                x = False
+                break
+            
+        if x == True:
             Move_Maker()
+            
+        else:
+            Move_Error()
             
             
     elif dx / dy == 1 and dx >= 2:
-        
-        try:
-            for i in range(dx - 1):
 
-                # Checks if any of the spaces between Move_New and Move_Current are not empty
-                if Board[Index['y'][Move_Current[1]] + (i + 1), Index['x'][Move_Current[0]] + (i + 1)] != ' ':
+        for i in range(dx - 1):
 
-                    Move_Error()
-                    break
+            # Checks if any of the spaces between Move_New and Move_Current are not empty
+            if Board[Index['y'][Move_Current[1]] + (i + 1), Index['x'][Move_Current[0]] + (i + 1)] != ' ':
+
+                x = False
+                break
             
-        except:
+        if x == True:
             Move_Maker()
+            
+        else:
+            Move_Error()
             
             
     elif dx / dy == 1 and dx <= -2:
-        
-        try:
-            for i in range(-dx - 1):
 
-                # Checks if any of the spaces between Move_New and Move_Current are not empty
-                if Board[Index['y'][Move_Current[1]] - (i + 1), Index['x'][Move_Current[0]] - (i + 1)] != ' ':
+        for i in range(-dx - 1):
 
-                    Move_Error()
-                    break
+            # Checks if any of the spaces between Move_New and Move_Current are not empty
+            if Board[Index['y'][Move_Current[1]] - (i + 1), Index['x'][Move_Current[0]] - (i + 1)] != ' ':
+
+                x = False
+                break
             
-        except:
+        if x == True:
             Move_Maker()
             
+        else:
+            Move_Error()            
             
     else:
         
@@ -394,14 +410,14 @@ if Play == "yes":
     
     try:                                                    #
         Mode = input().split('-')                           #
-                                                            #    Tries to iterate over the input 
-        B_Time = int(Mode[0]) * 60                          #            
+                                                            #   Tries to iterate over the input 
+        B_Time = int(Mode[0]) * 60                          #
         W_Time = int(Mode[0]) * 60                          #
     
     
     except:                                                 #
-        if Mode[0] != "unlimited":                          #    Prevents game from starting if iteration failed
-            print("incorrect format for mode inputted.")    #    and The selected mode is not unlimited
+        if Mode[0] != "unlimited":                          #   Prevents game from starting if iteration failed
+            print("incorrect format for mode inputted.")    #   and The selected mode is not unlimited
             Play = "no"                                     #
 
 
@@ -453,26 +469,27 @@ while Play == "yes": # The while-loop that contains the game
         # Checks if a timer is needed 
         if Mode[0] != "unlimited":
             
-            try:
-                B_Time = B_Time - (Time_Stop - Time_Start) # Calculates time used during a move
-            
-            except:
-                Time_Count = 1 # A variable used on the first turn for black     
-                print(Mode[0], ':', "00") # Prints the timer in its starting state for the game-mode
-
-                
             if W_Time <= 0:
                 print("Black wins. White ran out of time")
                 Play = "no"
             
-            
             try:
-                W_Time += int(Mode[1]) # Adds a designated amount of time as stated in the Mode input
+                B_Time = B_Time - (Time_Stop - Time_Start) # Calculates time used during a move
+                
+                if Mode[1] != "min":
+                
+                    W_Time += int(Mode[1]) # Adds a designated amount of time as stated in the Mode input
 
-                print(int(W_Time // 60), ':', round(((W_Time / 60) - (W_Time // 60)) * 60, 1)) # prints timer
+                    # Prints the timer
+                    print(int(W_Time // 60), ':', round(((W_Time / 60) - (W_Time // 60)) * 60, 1))
+            
+                else:
+                    # Prints the timer
+                    print(int(W_Time // 60), ':', round(((W_Time / 60) - (W_Time // 60)) * 60, 1))
             
             except:
-                print(int(W_Time // 60), ':', round(((W_Time / 60) - (W_Time // 60)) * 60, 1)) # prints timer
+                Time_Count = 1 # A variable used on the first turn for black     
+                print(Mode[0], ':', "00") # Prints the timer in its starting state for the game-mode
         
         
     else:
@@ -486,24 +503,26 @@ while Play == "yes": # The while-loop that contains the game
         # Checks if a timer is needed
         if Mode[0] != "unlimited":
             
+            if B_Time <= 0:
+                print("White wins. Black ran out of time")
+                Play = "no"
+            
             if Time_Count == 1:
             
                 Time_Count = 0
                 print(Mode[0], ':', "00") # Prints the timer in its starting state for the game-mode
             
-            
-            elif B_Time <= 0:
-                print("White wins. Black ran out of time")
-                Play = "no"
-            
-            
-            try:
+            elif Mode[1] != "min":
+                
                 B_Time += int(Mode[1]) # Adds a designated amount of time as stated in the Mode input
 
-                print(int(B_Time // 60), ':', round(((B_Time / 60) - (B_Time // 60)) * 60, 1)) # Prints timer
+                # Prints the timer
+                print(int(B_Time // 60), ':', round(((B_Time / 60) - (B_Time // 60)) * 60, 1)) 
 
-            except:
-                print(int(B_Time // 60), ':', round(((B_Time / 60) - (B_Time // 60)) * 60, 1)) # Prints timer
+            else:
+                
+                # Prints the timer
+                print(int(B_Time // 60), ':', round(((B_Time / 60) - (B_Time // 60)) * 60, 1))
 
         
         
@@ -515,8 +534,8 @@ while Play == "yes": # The while-loop that contains the game
     # Takes player input for what move to make
     print(Turn, '\n' "Choose a piece and where to move it.")
     Move = input("Current location,new location (Do not use spaces): ") 
-    
 
+    
     try:
         Move = Move.split(',')  # Splits the input into a list with two elements
 
@@ -538,13 +557,10 @@ while Play == "yes": # The while-loop that contains the game
     except:
         Move_Error()
 
-
-    # Prevents Pieces from being moved outside the board and raising an error
+    # Prevents Pieces from being moved outside the board and raising an error    
     if Move_New[0] not in Index['x'].keys() or Move_New[1] not in Index['y'].keys():
             
-            Move_Error()
-
-
+        Move_Error()
 
 # _______________________________________________________________
 # Legal Move Detection
@@ -637,7 +653,13 @@ while Play == "yes": # The while-loop that contains the game
     elif (Piece_Old == '♖' or Piece_Old == '♜') and \
          (dx == 0  or dy == 0):
 
-        Piece_Jump()        
+        if dx == 1 or dx == -1 or dy == 1 or dy == -1:
+            
+            Move_Maker()
+            
+        elif dx > 1 or dx < -1 or dy > 1 or dy > -1:
+
+            Piece_Jump()        
 
 
         
@@ -645,15 +667,26 @@ while Play == "yes": # The while-loop that contains the game
     elif (Piece_Old == '♗' or Piece_Old == '♝') and \
          (dx == dy or dx == -dy):
 
-        Piece_Jump()
+        if dx == 1 or dx == -1 or dy == 1 or dy == -1:
+            
+            Move_Maker()
+            
+        elif dx > 1 or dx < -1 or dy > 1 or dy > -1:
+
+            Piece_Jump()
 
 
     
     # Checks if the piece to be moved is a queen
     elif Piece_Old == '♕' or Piece_Old == '♛':
 
-        Piece_Jump()
+        if dx == 1 or dx == -1 or dy == 1 or dy == -1:
 
+            Move_Maker()
+
+        elif dx > 1 or dx < -1 or dy > 1 or dy > -1:
+
+            Piece_Jump()
 
 
     # Checks if the piece to be moved is a king
