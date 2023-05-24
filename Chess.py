@@ -13,6 +13,9 @@ import time
 # A variable used to determine which players turn it is
 T = 0
 
+B_Time = 'not important'        #
+W_Time = 'not important'        #    Are only there to make the unlimited time mode playable
+
 
 W_Rook_a_Movecount = 0          #
 W_Rook_h_Movecount = 0          #
