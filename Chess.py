@@ -392,17 +392,17 @@ if Play == "yes":
     
     Last_Move = [] # Clears Last_Move in preparation for a new game
     
-try:                                                    #
-    Mode = input().split('-')                           #
-                                                        #    Tries to iterate over the input 
-    B_Time = int(Mode[0]) * 60                          #
-    W_Time = int(Mode[0]) * 60                          #
+    try:                                                    #
+        Mode = input().split('-')                           #
+                                                            #    Tries to iterate over the input 
+        B_Time = int(Mode[0]) * 60                          #            
+        W_Time = int(Mode[0]) * 60                          #
     
     
-except:                                                 #
-    if Mode[0] != "unlimited":                          #    Prevents game from starting if iteration failed
-        print("incorrect format for mode inputted.")    #    and The selected mode is not unlimited
-        Play = "no"                                     #
+    except:                                                 #
+        if Mode[0] != "unlimited":                          #    Prevents game from starting if iteration failed
+            print("incorrect format for mode inputted.")    #    and The selected mode is not unlimited
+            Play = "no"                                     #
 
 
     
