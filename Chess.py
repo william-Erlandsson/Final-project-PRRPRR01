@@ -13,8 +13,8 @@ import time
 # A variable used to determine which players turn it is
 T = 0
 
-B_Time = 'not important'        #
-W_Time = 'not important'        #    Are only there to make the unlimited time mode playable
+B_Time = 1000                   #
+W_Time = 1000                   #    Are only there to make the unlimited time mode playable
 
 
 W_Rook_a_Movecount = 0          #
@@ -516,13 +516,7 @@ while Play == "yes": # The while-loop that contains the game
     print(Turn, '\n' "Choose a piece and where to move it.")
     Move = input("Current location,new location (Do not use spaces): ") 
     
-    
-    # Prevents Pieces from being moved outside the board and raising an error
-    if Move_New[0] not in Index['x'].keys() or Move_New[1] not in Index['y'].keys():
-            
-            Move_Error()
-    
-    
+
     try:
         Move = Move.split(',')  # Splits the input into a list with two elements
 
@@ -543,6 +537,12 @@ while Play == "yes": # The while-loop that contains the game
         
     except:
         Move_Error()
+
+
+    # Prevents Pieces from being moved outside the board and raising an error
+    if Move_New[0] not in Index['x'].keys() or Move_New[1] not in Index['y'].keys():
+            
+            Move_Error()
 
 
 
